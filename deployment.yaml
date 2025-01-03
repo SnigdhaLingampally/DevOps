@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podtato-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podtato-head
+  template:
+    metadata:
+      labels:
+        app: podtato-head
+    spec:
+      containers:
+      - name: server
+        image: kaleoum/podtato-main:v0.1.0
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podtato-main
+spec:
+  selector:
+    app: podtato-head
+  ports:
+  - port: 9000
+    targetPort: 9000
+  type: NodePort
